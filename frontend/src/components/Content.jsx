@@ -26,8 +26,15 @@ function Content() {
         else{
             alert('Please type any content to generate')
         }
-
     }
+
+  // check if the content state is not empty and then generate the fileName from the url 
+  
+  if (content != null and fileName == null){
+      let domain = (new URL(url)).hostname.replace('www.',''); // getting the domain from the url
+      setFileName(domain);
+  }
+    
   return (
     <>
     <div className='ml-14 mt-8 flex justify-center gap-5'>
