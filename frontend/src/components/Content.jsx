@@ -1,30 +1,29 @@
 import axios from 'axios'
 import React, { useContext, useState } from 'react'
-import { QrContext } from './ContextApi'
+import { QrContext, QrFileNameContext } from './ContextApi'
 
 
 function Content() {
     const [content,setContent] = useState()
-    const [fileName, setFileName] = useState()
+    const {fileName, setfileName} = useContext(QrFileNameContext)
     const {QrCode, setQrcode} = useContext(QrContext)
 
     const handleClick = () =>{
         if (content && fileName){
             const data = {
                 'content' : content,
-                'fileName' : fileName?fileName:'QR_code'
+                'fileName' : fileName
             }
             axios.post('http://127.0.0.1:8000/generator/',data)
             .then(response=>{
                 setQrcode('http://127.0.0.1:8000/' + response.data.key)
-                console.log(QrCode)
             })
             .catch(error=>{
                 alert('Something error occured')
             })
         }
         else{
-            alert('Please type any content to generate')
+            alert('Please type the content and file_name to generate')
         }
 
     }
@@ -38,7 +37,7 @@ function Content() {
 
         <div className="mb-6">
            <label  className="block text-gray-700 text-sm font-bold mb-2">Enter the file name</label>
-           <input  type="text" value={fileName} onChange={(e)=>setFileName(e.target.value)} className="shadow appearance-none border rounded w-96 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"/>
+           <input  type="text" value={fileName} onChange={(e)=>setfileName(e.target.value)} className="shadow appearance-none border rounded w-96 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"/>
         </div>
    </div>
     <div className='w-full flex justify-center'>
